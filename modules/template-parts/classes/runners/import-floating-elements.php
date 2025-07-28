@@ -12,6 +12,8 @@ use Elementor\App\Modules\ImportExport\Utils as ImportExportUtils;
 
 class Import_Floating_Elements extends Import_Runner_Base {
 
+	const CONDITIONS_CACHE_META_KEY = 'elementor_pro_theme_builder_conditions';
+
 	public static function get_name(): string {
 		return 'floating-elements';
 	}
@@ -30,16 +32,30 @@ class Import_Floating_Elements extends Import_Runner_Base {
 		$posts_settings = $data['manifest']['content'][ $post_type ];
 		$path = $data['extracted_directory_path'] . 'content/' . $post_type . '/';
 		$imported_floating_elements = $imported_data['content']['e-floating-buttons']['succeed'] ?? [];
+		$imported_post_ids = [];
 
 		foreach ( $posts_settings as $id => $post_settings ) {
-			$this->import_floating_element_metadata(
+			$imported_post_ids[] = $this->import_floating_element_metadata(
 				$id,
 				$path,
 				$imported_floating_elements
 			);
 		}
 
+		$this->set_display_conditions_cache( $imported_post_ids );
+
 		return [];
+	}
+
+	private function set_display_conditions_cache( array $imported_post_ids ) {
+		$conditions = get_option( self::CONDITIONS_CACHE_META_KEY, [] );
+		$conditions['floating_buttons'] = [];
+
+		foreach ( $imported_post_ids as $imported_post_id ) {
+			$conditions['floating_buttons'][ $imported_post_id ] = [ 'include/general' ];
+		}
+
+		update_option( self::CONDITIONS_CACHE_META_KEY, $conditions );
 	}
 
 	private function import_floating_element_metadata( $id, $path, $imported_floating_elements ) {
@@ -83,5 +99,7 @@ class Import_Floating_Elements extends Import_Runner_Base {
 			'_elementor_conditions',
 			[ 'include/general' ]
 		);
+
+		return $imported_post_id;
 	}
 }
