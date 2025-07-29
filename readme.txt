@@ -3,7 +3,7 @@ Contributors: elemntor
 Tags: elementor, themes, hello themes, hello plus, widgets
 Requires at least: 6.0
 Tested up to: 6.8
-Stable tag: 1.7.2
+Stable tag: 1.7.3
 Requires PHP: 7.4
 License: GPL-3
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -79,6 +79,14 @@ For documentation and tutorials, visit our [Knowledge Base](https://elementor.co
 > You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability](https://patchstack.com/database/wordpress/plugin/hello-plus/vdp?pin=yjNmZ24tOxHkDmPZ&vero_id=security%40elementor.com&vero_conv=8O2Z42Yf8LaWeP3OA-siS16QfE_q7upzmkxRQDKcUlDak9P0YG5dwcvRZzblPc1KzxVu3qPDRapdqd9jMv4vmWKMdwo4Iu5PjeWFsSbZPTtq).
 
 == Changelog ==
+
+= 1.7.3 - 2025-07-29 =
+* Fix: Show Contact Buttons tab consistently in Hello+ Header
+* Fix: Layout issues in Hello+ Header when no menu is present on the site
+* Fix: Automatically set imported Hello+ Header and Footer as active after importing a kit
+* Fix: Hello+ Header widget - Consistent naming of sections in widget controls
+* Tweak: Hello+ Header widget - add note when the selected menu has no items
+* Fix: Prevent interactions between Forms Lite and Elementor Pro Forms
 
 = 1.7.2 - 2025-07-17 =
 * Fix: Form Lite now correctly submits when user is logged out
