@@ -21,6 +21,10 @@ class Admin_Controller {
 	}
 
 	public function maybe_init_cart() {
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			return;
+		}
+
 		$has_cart = is_a( WC()->cart, 'WC_Cart' );
 		if ( ! $has_cart ) {
 			$session_class = apply_filters( 'woocommerce_session_handler', 'WC_Session_Handler' );
