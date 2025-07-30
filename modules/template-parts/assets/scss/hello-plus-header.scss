@@ -487,7 +487,7 @@
 			height: var(--header-menu-cart-icon-size);
 			padding: 0;
 			width: var(--header-menu-cart-icon-size);
-	
+
 			& svg {
 				fill: var(--header-menu-cart-icon-color);
 				height: var(--header-menu-cart-icon-size);
@@ -495,21 +495,21 @@
 				transition: variables.$transition;
 				width: var(--header-menu-cart-icon-size);
 			}
-	
+
 			& i {
 				color: var(--header-menu-cart-icon-color);
 				pointer-events: none;
 				font-size: var(--header-menu-cart-icon-size);
 			}
-	
+
 			&:hover {
 				background-color: transparent;
-	
+
 				& svg {
 					fill: var(--header-menu-cart-icon-hover-color);
 					transition: variables.$transition;
 				}
-	
+
 				& i {
 					color: var(--header-menu-cart-icon-hover-color);
 					transition: variables.$transition;
@@ -738,7 +738,7 @@
 					&.has-responsive-width-default {
 						padding-inline-start: var(--header-box-padding-inline-start);
 						padding-inline-end: var(--header-box-padding-inline-end);
-					}	
+					}
 				}
 
 				.ehp-header__contact-buttons.has-responsive-display-navbar {
@@ -810,12 +810,14 @@
 		}
 
 		.ehp-header__menu-cart-items {
-			right: calc(-1 * var(--header-box-padding-inline-start));
+			max-height: calc(80vh - var(--header-box-padding-block-end));
+			overflow-y: auto;
 			padding-block-start: var(--header-box-padding-block-start);
 			padding-block-end: var(--header-box-padding-block-end);
 			padding-inline-start: var(--header-box-padding-inline-start);
 			padding-inline-end: var(--header-box-padding-inline-end);
 			position: absolute;
+			right: calc(-1 * var(--header-box-padding-inline-start));
 			top: calc(100% + var(--header-box-padding-block-end));
 			width: 100vw;
 		}
@@ -916,7 +918,9 @@
 			}
 
 			&__menu-cart-items {
+				max-height: calc(85vh - var(--header-box-padding-block-end) - 20px);
 				min-width: 260px;
+				overflow-y: auto;
 				padding: 10px;
 				position: absolute;
 				right: 0;

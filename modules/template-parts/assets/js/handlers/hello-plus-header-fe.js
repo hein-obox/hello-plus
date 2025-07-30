@@ -96,6 +96,7 @@ export default class HelloPlusHeaderHandler extends elementorModules.frontend.ha
 
 		this.initDefaultState();
 		this.scrollTimeout = null;
+		this.originalBodyOverflow = '';
 	}
 
 	initDefaultState() {
@@ -381,9 +382,22 @@ export default class HelloPlusHeaderHandler extends elementorModules.frontend.ha
 
 	openMenuCart( cartMenuItems ) {
 		cartMenuItems.removeAttribute( 'inert' );
+
+		if ( this.isResponsiveBreakpoint() && this.checkCartMenuItemsOverflow( cartMenuItems ) ) {
+			this.originalBodyOverflow = document.body.style.overflow;
+			document.body.style.overflow = 'hidden';
+		}
+	}
+
+	checkCartMenuItemsOverflow( cartMenuItems ) {
+		return cartMenuItems.scrollHeight > cartMenuItems.clientHeight;
 	}
 
 	closeMenuCart( cartMenuItems ) {
 		cartMenuItems.setAttribute( 'inert', '' );
+
+		if ( this.isResponsiveBreakpoint() && this.checkCartMenuItemsOverflow( cartMenuItems ) ) {
+			document.body.style.overflow = this.originalBodyOverflow;
+		}
 	}
 }
