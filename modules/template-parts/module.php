@@ -134,6 +134,10 @@ class Module extends Module_Base {
 		$header_doc_post = Ehp_Header::get_document_post();
 		$header = Utils::elementor()->documents->get( $header_doc_post );
 
+		if ( ! current_theme_supports( 'hello-plus-menu-cart' ) || empty( $header ) ) {
+			return $fragments;
+		}
+
 		try {
 			$ehp_header_widget = $header->get_widget_object();
 		} catch ( \Exception $e ) {
