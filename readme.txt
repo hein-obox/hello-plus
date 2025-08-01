@@ -80,7 +80,7 @@ For documentation and tutorials, visit our [Knowledge Base](https://elementor.co
 
 == Changelog ==
 
-= 1.7.5 - 2025-01-30 =
+= 1.7.5 - 2025-08-01 =
 * Fix: AJAX Add to Cart button gets stuck spinning/loading when clicked
 
 = 1.7.4 - 2025-07-30 =
