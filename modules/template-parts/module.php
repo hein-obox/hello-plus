@@ -133,10 +133,8 @@ class Module extends Module_Base {
 	public function add_to_cart_fragments( $fragments ) {
 		$header_doc_post = Ehp_Header::get_document_post();
 		$header = Utils::elementor()->documents->get( $header_doc_post );
-		$active_theme = wp_get_theme();
-		$active_theme_slug = $active_theme->get_stylesheet();
 
-		if ( 'hello-commerce' !== $active_theme_slug || empty( $header ) ) {
+		if ( ! current_theme_supports( 'hello-plus-menu-cart' ) || empty( $header ) ) {
 			return $fragments;
 		}
 
