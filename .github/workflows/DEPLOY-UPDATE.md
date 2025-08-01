@@ -173,8 +173,8 @@ plugins/hello-plus/.github/actions/
   "repository": {
     "name": "hello-plus",
     "owner": "elementor",
-    "main_branch": "master",
-    "release_branches": ["master", "1.*.*"]
+    "main_branch": "main",
+    "release_branches": ["main", "1.*"]
   },
   "release": {
     "wordpress_org": {
@@ -261,7 +261,7 @@ ALLOWED_REPOS: ["elementor/hello-plus"]
 BLOCKED_ACTORS: ["dependabot[bot]"]
 
 # Branch validation  
-RELEASE_BRANCHES: ["master", "1.*.*"]
+RELEASE_BRANCHES: ["main", "1.*"]
 
 # Change validation
 - Uncommitted changes check
@@ -428,8 +428,8 @@ This creates the best of both worlds: advanced release preparation with full aut
   "repository": {
     "name": "hello-plus",
     "owner": "elementor", 
-    "main_branch": "master",
-    "release_branches": ["master", "1.*.*"]
+    "main_branch": "main",
+    "release_branches": ["main", "1.*"]
   },
   "release": {
     "changelog_file": "readme.txt",
