@@ -15,12 +15,12 @@ test.describe( 'Hello Plus Header', () => {
                         if ( ! await backgroundColorControl.isVisible() ) {
                                 await editor.setChooseControlValue( 'button_background_color_background', 'eicon-paint-brush' );
                         }
-                
+
                         await editor.setColorControlValue( 'button_background_color', '#981C21' );
 
                         await editor.saveSiteSettingsWithTopBar( false );
                 } );
-                        
+
                 await test.step( 'Assert dropdown button style', async () => {
                         await editor.page.goto( '/' );
 

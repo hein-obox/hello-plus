@@ -11,7 +11,7 @@ permissions:
 jobs:
   playwright-tests:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -35,6 +35,9 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
+      - name: Build plugin
+        run: npm run build
+
       - name: Install wp-env
         run: npm install -g @wordpress/env
 
@@ -53,6 +56,14 @@ jobs:
           npm run test:playwright
           echo "exit_code=$?" >> $GITHUB_OUTPUT
         continue-on-error: false
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-test-results-${{ matrix.shardIndex }}
+          path: ${{ inputs.path-to-results || 'test-results/' }}
+          if-no-files-found: ignore
+          retention-days: 2
 
       - name: Check test results
         if: steps.playwright-tests.outcome == 'failure'
