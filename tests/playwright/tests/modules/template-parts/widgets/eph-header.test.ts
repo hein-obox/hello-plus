@@ -1,0 +1,30 @@
+import { parallelTest as test } from '../../../../parallelTest';
+import { expect } from '@playwright/test';
+import WpAdminPage from '../../../../pages/wp-admin-page';
+
+test.describe( 'Hello Plus Header', () => {
+        test( 'Assert that the dropdown button does not inherit the background color from the theme settings', async ( { page, apiRequests }, testInfo ) => {
+                const wpAdmin = new WpAdminPage( page, testInfo, apiRequests );
+                const editor = await wpAdmin.openNewPage();
+
+                await test.step( 'Update Hello Commerce style settings', async () => {
+                        await editor.openSiteSettings( 'theme-style-buttons' );
+
+                        const backgroundColorControl = editor.page.locator( '.elementor-control-button_background_color' );
+
+                        if ( ! await backgroundColorControl.isVisible() ) {
+                                await editor.setChooseControlValue( 'button_background_color_background', 'eicon-paint-brush' );
+                        }
+                
+                        await editor.setColorControlValue( 'button_background_color', '#981C21' );
+
+                        await editor.saveSiteSettingsWithTopBar( false );
+                } );
+                        
+                await test.step( 'Assert dropdown button style', async () => {
+                        await editor.page.goto( '/' );
+
+                        await expect.soft( editor.page.locator( 'header' ) ).toHaveScreenshot( 'header.png' );
+                } );
+        } );
+} );
