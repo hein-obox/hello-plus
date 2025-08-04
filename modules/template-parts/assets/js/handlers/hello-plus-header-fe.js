@@ -96,7 +96,7 @@ export default class HelloPlusHeaderHandler extends elementorModules.frontend.ha
 
 		this.initDefaultState();
 		this.scrollTimeout = null;
-		this.originalBodyOverflow = '';
+		this.originalBodyOverflow = document.body.style.overflow;
 	}
 
 	initDefaultState() {
@@ -383,8 +383,16 @@ export default class HelloPlusHeaderHandler extends elementorModules.frontend.ha
 	openMenuCart( cartMenuItems ) {
 		cartMenuItems.removeAttribute( 'inert' );
 
-		if ( this.isResponsiveBreakpoint() && this.checkCartMenuItemsOverflow( cartMenuItems ) ) {
-			this.originalBodyOverflow = document.body.style.overflow;
+		const cartMenuList = cartMenuItems.querySelector( '.ehp-header__menu-cart-list' );
+
+		if ( cartMenuList &&
+			this.isResponsiveBreakpoint() &&
+			this.checkCartMenuItemsOverflow( cartMenuList )
+		) {
+			if ( this.originalBodyOverflow !== document.body.style.overflow ) {
+				this.originalBodyOverflow = document.body.style.overflow;
+			}
+
 			document.body.style.overflow = 'hidden';
 		}
 	}
@@ -396,7 +404,7 @@ export default class HelloPlusHeaderHandler extends elementorModules.frontend.ha
 	closeMenuCart( cartMenuItems ) {
 		cartMenuItems.setAttribute( 'inert', '' );
 
-		if ( this.isResponsiveBreakpoint() && this.checkCartMenuItemsOverflow( cartMenuItems ) ) {
+		if ( this.isResponsiveBreakpoint() ) {
 			document.body.style.overflow = this.originalBodyOverflow;
 		}
 	}
