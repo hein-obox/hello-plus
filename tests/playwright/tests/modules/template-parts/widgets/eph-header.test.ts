@@ -45,8 +45,8 @@ test.describe( 'Hello Plus Header', () => {
                         await page.locator( '.elementor-template-library-template-body' ).first().hover();
                         await page.locator( '.elementor-template-library-template-action' ).first().click();
 
-                        if ( await page.locator( '.a#elementor-template-library-connect__button' ).isVisible() ) {
-                                await page.locator( '.a#elementor-template-library-connect__button' ).click();
+                        if ( await page.locator( 'a#elementor-template-library-connect__button' ).isVisible() ) {
+                                await page.locator( 'a#elementor-template-library-connect__button' ).click();
                         }
 
                         if ( await page.locator( 'a.e-connect-action-button' ).isVisible() ) {
