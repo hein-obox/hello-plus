@@ -21,6 +21,33 @@ test.describe( 'Hello Plus Header', () => {
                         await editor.saveSiteSettingsWithTopBar( false );
                 } );
 
+                // await test.step( 'Create a new menu', async () => {
+                //         await wpAdmin.gotoDashboard();
+
+                //         await editor.page.pause();
+                // } );
+
+                await test.step( 'Create a new header', async () => {
+                        await wpAdmin.gotoDashboard();
+                        await page.getByRole( 'link', { name: 'Templates', exact: true } ).click();
+                        await page.getByRole( 'link', { name: 'Hello+ Header' } ).first().click();
+                        
+                        if ( await page.locator( '.wp-list-table' ).first().locator( '[type="checkbox"]' ).first().isVisible() ) {
+                                await page.locator( '.wp-list-table' ).first().locator( '[type="checkbox"]' ).first().check();
+                                await page.locator('#bulk-action-selector-top').selectOption('trash');
+                                await page.locator('#doaction').click();
+                        }
+
+                        await page.getByRole( 'link', { name: 'Add New Hello+ Header' } ).click();
+                        await page.getByRole( 'button', { name: 'Create Template' } ).click();
+
+                        await wpAdmin.waitForEditorToLoad();
+                        await page.locator( '.elementor-template-library-template-body' ).first().hover();
+                        await page.locator( '.elementor-template-library-template-action' ).first().click();
+                        await wpAdmin.closeAnnouncementsIfVisible();
+                        await page.getByRole( 'button', { name: 'Publish' } ).click();
+                } );
+
                 await test.step( 'Assert dropdown button style', async () => {
                         await editor.page.goto( '/' );
 

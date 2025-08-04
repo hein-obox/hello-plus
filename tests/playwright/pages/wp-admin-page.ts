@@ -410,4 +410,14 @@ export default class WpAdminPage extends BasePage {
 		await this.page.locator( '#admin_bar_front' ).check();
 		await this.page.locator( '#submit' ).click();
 	}
+
+	/**
+	 * Wait for the Elementor editor to finish loading.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async waitForEditorToLoad(): Promise<void> {
+		await this.page.waitForLoadState( 'load', { timeout: 20000 } );
+		await this.waitForPanel();
+	}
 }
