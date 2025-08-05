@@ -24,7 +24,7 @@ test.describe( 'Hello Plus Header', () => {
 
                 await test.step( 'Create a new menu', async () => {
                         await wpAdmin.gotoDashboard();
-                        await editor.createNewMenu( 'Dropdown menu' );
+                        await wpAdmin.createNewMenu( 'Dropdown menu' );
                 } );
 
                 await test.step( 'Create a new header', async () => {
