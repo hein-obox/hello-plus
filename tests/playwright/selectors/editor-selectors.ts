@@ -63,6 +63,7 @@ const EditorSelectors = {
 		images: '.attachments-wrapper li',
 		imgCaption: '#attachment-details-caption',
 		imgDescription: '#attachment-details-description',
+		closeDialogBtn: '.dialog-header .eicon-close',
 	},
 	button: {
 		getByName: ( name: string ) => `.elementor-button:has-text("${ name }")`,

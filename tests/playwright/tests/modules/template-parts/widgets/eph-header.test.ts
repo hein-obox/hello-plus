@@ -1,6 +1,7 @@
 import { parallelTest as test } from '../../../../parallelTest';
 import { expect } from '@playwright/test';
 import WpAdminPage from '../../../../pages/wp-admin-page';
+import _path from 'path';
 
 test.describe( 'Hello Plus Header', () => {
         test( 'Assert that the dropdown button does not inherit the background color from the theme settings', async ( { page, apiRequests }, testInfo ) => {
@@ -28,31 +29,10 @@ test.describe( 'Hello Plus Header', () => {
                 // } );
 
                 await test.step( 'Create a new header', async () => {
+                        const filePath = _path.resolve( __dirname, `../../../../templates/hello-plus-header-template.json` );
                         await wpAdmin.gotoDashboard();
-                        await page.getByRole( 'link', { name: 'Templates', exact: true } ).click();
-                        await page.getByRole( 'link', { name: 'Hello+ Header' } ).first().click();
-
-                        if ( await page.locator( '.wp-list-table' ).first().locator( '[type="checkbox"]' ).first().isVisible() ) {
-                                await page.locator( '.wp-list-table' ).first().locator( '[type="checkbox"]' ).first().check();
-                                await page.locator( '#bulk-action-selector-top' ).selectOption( 'trash' );
-                                await page.locator( '#doaction' ).click();
-                        }
-
-                        await page.getByRole( 'link', { name: 'Add New Hello+ Header' } ).click();
-                        await page.getByRole( 'button', { name: 'Create Template' } ).click();
-
-                        await wpAdmin.waitForEditorToLoad();
-                        await page.locator( '.elementor-template-library-template-body' ).first().hover();
-                        await page.locator( '.elementor-template-library-template-action' ).first().click();
-
-                        if ( await page.locator( 'a#elementor-template-library-connect__button' ).isVisible() ) {
-                                await page.locator( 'a#elementor-template-library-connect__button' ).click();
-                        }
-
-                        if ( await page.locator( 'a.e-connect-action-button' ).isVisible() ) {
-                                await page.locator( 'a.e-connect-action-button' ).click();
-                        }
-
+                        await editor.page.pause();
+                        await editor.importTemplateUI( filePath );
                         await wpAdmin.closeAnnouncementsIfVisible();
                         await editor.publishPage();
                 } );
