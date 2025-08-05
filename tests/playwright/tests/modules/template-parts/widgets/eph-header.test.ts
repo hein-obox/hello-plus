@@ -34,7 +34,7 @@ test.describe( 'Hello Plus Header', () => {
                         await editor.page.pause();
                         await editor.importTemplateUI( filePath );
                         await wpAdmin.closeAnnouncementsIfVisible();
-                        await editor.publishPage();
+                        await page.getByRole( 'button', { name: 'Publish' } ).click();
                 } );
 
                 await test.step( 'Assert dropdown button style', async () => {

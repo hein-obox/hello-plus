@@ -1400,7 +1400,7 @@ export default class EditorPage extends BasePage {
 		await this.ensurePanelLoaded();
 		await this.page.getByText( 'Templates', { exact: true } ).click();
 		await this.page.getByText( 'Site templates' ).click();
-		await this.page.locator( '#elementor-template-library-header-import i' ).click();
+		await this.page.locator( EditorSelectors.templateImport.importIcon ).click();
 		await this.page.getByText( 'Select File' ).click();
 		await this.page.locator( EditorSelectors.media.imageInp ).setInputFiles( filePath );
 		await this.page.getByRole( 'button', { name: 'Continue' } ).click();

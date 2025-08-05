@@ -65,6 +65,9 @@ const EditorSelectors = {
 		imgDescription: '#attachment-details-description',
 		closeDialogBtn: '.dialog-header .eicon-close',
 	},
+	templateImport: {
+		importIcon: '#elementor-template-library-header-import i',
+	},
 	button: {
 		getByName: ( name: string ) => `.elementor-button:has-text("${ name }")`,
 		id: '[data-setting="button_css_id"]',
