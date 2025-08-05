@@ -1423,4 +1423,61 @@ export default class EditorPage extends BasePage {
 
 		this.isPanelLoaded = true;
 	}
+
+	async createNewMenu( menuName: string ) {
+		await this.page.getByRole( 'link', { name: 'Appearance' } ).click();
+		await this.page.getByRole( 'link', { name: 'Menus' } ).click();
+
+		if ( await this.page.getByRole( 'link', { name: 'create a new menu' } ).isVisible() ) {
+			await this.page.getByRole( 'link', { name: 'create a new menu' } ).click();
+		}
+
+		await this.page.getByRole( 'textbox', { name: 'Menu Name' } ).click();
+		await this.page.getByRole( 'textbox', { name: 'Menu Name' } ).fill( menuName );
+		await this.page.getByRole( 'textbox', { name: 'Menu Name' } ).press( 'Enter' );
+		await this.page.getByRole( 'checkbox', { name: 'Header' } ).check();
+
+		if ( await this.page.getByRole( 'button', { name: 'Create Menu' } ).isVisible() ) {
+			await this.page.getByRole( 'button', { name: 'Create Menu' } ).click();
+		} else {
+			await this.page.getByRole( 'button', { name: 'Save Menu' } ).click();
+		}
+
+		await this.page.getByRole( 'button', { name: 'Custom Links' } ).click();
+		await this.page.getByRole( 'textbox', { name: 'URL' } ).click();
+		await this.page.getByRole( 'textbox', { name: 'URL' } ).fill( '#' );
+		await this.page.getByRole( 'textbox', { name: 'URL' } ).press( 'Tab' );
+		await this.page.getByRole( 'textbox', { name: 'Link Text' } ).fill( 'Parent menu item' );
+		await this.page.getByRole( 'textbox', { name: 'Link Text' } ).press( 'Enter' );
+		await this.page.getByRole( 'textbox', { name: 'URL' } ).click();
+		await this.page.getByRole( 'textbox', { name: 'URL' } ).fill( '#' );
+		await this.page.getByRole( 'textbox', { name: 'URL' } ).press( 'Tab' );
+		await this.page.getByRole( 'textbox', { name: 'Link Text' } ).fill( 'Child menu item' );
+		await this.page.getByRole( 'textbox', { name: 'Link Text' } ).press( 'Enter' );
+
+		await this.page.waitForTimeout( 1000 );
+
+		const itemOne = this.page.locator( '#menu-to-edit > li:nth-child(1) .menu-item-handle' );
+		const itemTwo = this.page.locator( '#menu-to-edit > li:nth-child(2) .menu-item-handle' );
+
+		const itemOneBox = await itemOne.boundingBox();
+		const itemTwoBox = await itemTwo.boundingBox();
+
+		if ( itemOneBox && itemTwoBox ) {
+			// Drag `two` near and slightly right below `one` to make it a child
+			await this.page.mouse.move(
+			itemTwoBox.x + itemTwoBox.width / 2,
+			itemTwoBox.y + itemTwoBox.height / 2,
+			);
+			await this.page.mouse.down();
+			await this.page.mouse.move(
+			itemOneBox.x + 30, // ← indent to the right to trigger submenu nesting
+			itemOneBox.y + itemOneBox.height + 10,
+			{ steps: 10 },
+			);
+			await this.page.mouse.up();
+		}
+
+		await this.page.getByRole( 'button', { name: 'Save Menu' } ).click();
+	}
 }

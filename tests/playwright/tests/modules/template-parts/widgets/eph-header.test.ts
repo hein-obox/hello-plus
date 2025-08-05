@@ -22,11 +22,10 @@ test.describe( 'Hello Plus Header', () => {
                         await editor.saveSiteSettingsWithTopBar( false );
                 } );
 
-                // await test.step( 'Create a new menu', async () => {
-                //         await wpAdmin.gotoDashboard();
-
-                //         await editor.page.pause();
-                // } );
+                await test.step( 'Create a new menu', async () => {
+                        await wpAdmin.gotoDashboard();
+                        await editor.createNewMenu( 'Dropdown menu' );
+                } );
 
                 await test.step( 'Create a new header', async () => {
                         const filePath = _path.resolve( __dirname, `../../../../templates/hello-plus-header-template.json` );
