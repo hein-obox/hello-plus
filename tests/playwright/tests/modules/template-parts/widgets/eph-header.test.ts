@@ -17,7 +17,7 @@ test.describe( 'Hello Plus Header', () => {
                                 await editor.setChooseControlValue( 'button_background_color_background', 'eicon-paint-brush' );
                         }
 
-                        await editor.setColorControlValue( 'button_background_color', '#981C21' );
+                        await editor.setColorControlValue( 'button_background_color', '#3bc7b6' );
 
                         await editor.saveSiteSettingsWithTopBar( false );
                 } );
