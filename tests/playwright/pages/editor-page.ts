@@ -1466,14 +1466,14 @@ export default class EditorPage extends BasePage {
 		if ( itemOneBox && itemTwoBox ) {
 			// Drag `two` near and slightly right below `one` to make it a child
 			await this.page.mouse.move(
-			itemTwoBox.x + itemTwoBox.width / 2,
-			itemTwoBox.y + itemTwoBox.height / 2,
+				itemTwoBox.x + itemTwoBox.width / 2,
+				itemTwoBox.y + itemTwoBox.height / 2,
 			);
 			await this.page.mouse.down();
 			await this.page.mouse.move(
-			itemOneBox.x + 30, // ← indent to the right to trigger submenu nesting
-			itemOneBox.y + itemOneBox.height + 10,
-			{ steps: 10 },
+				itemOneBox.x + 30, // ← indent to the right to trigger submenu nesting
+				itemOneBox.y + itemOneBox.height + 10,
+				{ steps: 10 },
 			);
 			await this.page.mouse.up();
 		}

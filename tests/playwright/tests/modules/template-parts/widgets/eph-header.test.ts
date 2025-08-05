@@ -30,16 +30,14 @@ test.describe( 'Hello Plus Header', () => {
                 await test.step( 'Create a new header', async () => {
                         const filePath = _path.resolve( __dirname, `../../../../templates/hello-plus-header-template.json` );
                         await wpAdmin.gotoDashboard();
-                        await editor.page.pause();
                         await editor.importTemplateUI( filePath );
                         await wpAdmin.closeAnnouncementsIfVisible();
                         await page.getByRole( 'button', { name: 'Publish' } ).click();
                 } );
 
-                await test.step( 'Assert dropdown button style', async () => {
+                await test.step( 'Assert dropdown menu button style', async () => {
                         await editor.page.goto( '/' );
-
-                        await expect.soft( editor.page.locator( 'header' ) ).toHaveScreenshot( 'header.png' );
+                        await expect.soft( editor.page.getByRole( 'button', { name: 'Parent menu item' } ) ).toHaveScreenshot( 'header-parent-menu-item.png' );
                 } );
         } );
 } );
