@@ -1404,6 +1404,7 @@ export default class EditorPage extends BasePage {
 		await this.page.getByText( 'Select File' ).click();
 		await this.page.locator( EditorSelectors.media.imageInp ).setInputFiles( filePath );
 		await this.page.getByRole( 'button', { name: 'Continue' } ).click();
+		await this.page.getByRole( 'button', { name: 'Enable and Import' } ).click();
 		await this.page.getByRole( 'button', { name: 'Insert' } ).first().click();
 	}
 
