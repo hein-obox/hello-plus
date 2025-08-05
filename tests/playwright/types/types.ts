@@ -1,10 +1,10 @@
 export type Image = {
-    title: string,
-    description?: string,
-    altText?: string,
-    caption?: string,
-    extension: string,
-    filePath?: string
+	title: string,
+	description?: string,
+	altText?: string,
+	caption?: string,
+	extension: string,
+	filePath?: string
 }
 
 export type User = {
@@ -16,11 +16,11 @@ export type User = {
 }
 
 export type LinkOptions = {
-    targetBlank?: boolean,
-    noFollow?: boolean,
-    customAttributes?: {key:string, value: string },
-    linkTo?: boolean,
-    linkInpSelector?: string
+	targetBlank?: boolean,
+	noFollow?: boolean,
+	customAttributes?: {key:string, value: string },
+	linkTo?: boolean,
+	linkInpSelector?: string
 }
 
 export type WpPage = {

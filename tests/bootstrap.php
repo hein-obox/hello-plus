@@ -25,10 +25,10 @@ $elementor_plugin_path = 'elementor/elementor.php';
 $active_plugins = [ $elementor_plugin_path, PLUGIN_PATH ];
 
 // Activates this plugin in WordPress so it can be tested.
-$GLOBALS['wp_tests_options'] = [
+$GLOBALS[ 'wp_tests_options' ] = [
 	'active_plugins' => $active_plugins,
-	'template' => 'twentytwentyone',
-	'stylesheet' => 'twentytwentyone',
+	'template'       => 'twentytwentyone',
+	'stylesheet'     => 'twentytwentyone',
 ];
 
 require_once $_tests_dir . '/includes/functions.php';
