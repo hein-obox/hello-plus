@@ -410,4 +410,93 @@ export default class WpAdminPage extends BasePage {
 		await this.page.locator( '#admin_bar_front' ).check();
 		await this.page.locator( '#submit' ).click();
 	}
+
+	/**
+	 * Wait for the Elementor editor to finish loading.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async waitForEditorToLoad(): Promise<void> {
+		await this.page.waitForLoadState( 'load', { timeout: 20000 } );
+		await this.waitForPanel();
+	}
+
+	async createNewMenu( menuName: string ) {
+		await this.deleteAllMenus();
+
+		await this.page.goto( '/wp-admin/nav-menus.php' );
+		await this.page.waitForLoadState( 'networkidle' );
+
+		if ( await this.page.getByRole( 'link', { name: 'create a new menu' } ).isVisible() ) {
+			await this.page.getByRole( 'link', { name: 'create a new menu' } ).click();
+		}
+
+		await this.page.getByRole( 'textbox', { name: 'Menu Name' } ).click();
+		await this.page.getByRole( 'textbox', { name: 'Menu Name' } ).fill( menuName );
+		await this.page.getByRole( 'textbox', { name: 'Menu Name' } ).press( 'Enter' );
+		await this.page.getByRole( 'checkbox', { name: 'Header' } ).check();
+
+		if ( await this.page.getByRole( 'button', { name: 'Create Menu' } ).isVisible() ) {
+			await this.page.getByRole( 'button', { name: 'Create Menu' } ).click();
+		} else {
+			await this.page.getByRole( 'button', { name: 'Save Menu' } ).click();
+		}
+
+		await this.page.getByRole( 'button', { name: 'Custom Links' } ).click();
+		await this.page.getByRole( 'textbox', { name: 'URL' } ).click();
+		await this.page.getByRole( 'textbox', { name: 'URL' } ).fill( '#' );
+		await this.page.getByRole( 'textbox', { name: 'URL' } ).press( 'Tab' );
+		await this.page.getByRole( 'textbox', { name: 'Link Text' } ).fill( 'Parent menu item' );
+		await this.page.getByRole( 'textbox', { name: 'Link Text' } ).press( 'Enter' );
+		await this.page.getByRole( 'textbox', { name: 'URL' } ).click();
+		await this.page.getByRole( 'textbox', { name: 'URL' } ).fill( '#' );
+		await this.page.getByRole( 'textbox', { name: 'URL' } ).press( 'Tab' );
+		await this.page.getByRole( 'textbox', { name: 'Link Text' } ).fill( 'Child menu item' );
+		await this.page.getByRole( 'textbox', { name: 'Link Text' } ).press( 'Enter' );
+
+		await this.page.waitForTimeout( 1000 );
+
+		const itemOne = this.page.locator( '#menu-to-edit > li:nth-child(1) .menu-item-handle' );
+		const itemTwo = this.page.locator( '#menu-to-edit > li:nth-child(2) .menu-item-handle' );
+
+		const itemOneBox = await itemOne.boundingBox();
+		const itemTwoBox = await itemTwo.boundingBox();
+
+		if ( itemOneBox && itemTwoBox ) {
+			// Drag `two` near and slightly right below `one` to make it a child
+			await this.page.mouse.move(
+				itemTwoBox.x + ( itemTwoBox.width / 2 ),
+				itemTwoBox.y + ( itemTwoBox.height / 2 ),
+			);
+			await this.page.mouse.down();
+			await this.page.mouse.move(
+				itemOneBox.x + 30, // ← indent to the right to trigger submenu nesting
+				itemOneBox.y + ( itemOneBox.height + 10 ),
+				{ steps: 10 },
+			);
+			await this.page.mouse.up();
+		}
+
+		await this.page.getByRole( 'button', { name: 'Save Menu' } ).click();
+	}
+
+	/**
+	 * Delete all existing Menus.
+	 * Loops all the menus, and delete them one by one until the delete menu button disappears.
+	 */
+	async deleteAllMenus(): Promise<void> {
+		await this.page.goto( '/wp-admin/nav-menus.php' );
+		await this.page.waitForLoadState( 'networkidle' );
+
+		const deleteMenuButton = await this.page.$( '#nav-menu-footer .menu-delete' );
+		// If the 'delete menu' button exists, delete the current menu.
+		if ( deleteMenuButton ) {
+			const deleteHref: string | null = await this.page.evaluate( () => document.querySelector( '#nav-menu-footer .menu-delete' )!.getAttribute( 'href' ) );
+			const page2 = await this.page.context().newPage();
+
+			await page2.goto( deleteHref! );
+			await page2.close();
+			await this.deleteAllMenus();
+		}
+	}
 }

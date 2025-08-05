@@ -19,6 +19,7 @@ let window: WindowType;
 export default class EditorPage extends BasePage {
 	readonly previewFrame: Frame;
 	postId: number;
+	isPanelLoaded = false;
 
 	/**
 	 * Create an Elementor editor page.
@@ -1382,5 +1383,44 @@ export default class EditorPage extends BasePage {
 		const elementWidthInPxUnit = await element.boundingBox().then( ( box ) => box?.width ?? 0 );
 		const vwAndPxValuesAreEqual = Math.abs( vwConvertedToPxUnit - elementWidthInPxUnit ) <= 1;
 		expect( vwAndPxValuesAreEqual ).toBeTruthy();
+	}
+
+	async importTemplateUI( filePath: string ) {
+		await this.page.getByRole( 'link', { name: 'Templates', exact: true } ).click();
+		await this.page.getByRole( 'link', { name: 'Hello+ Header' } ).first().click();
+
+		if ( await this.page.locator( '.wp-list-table' ).first().locator( '[type="checkbox"]' ).first().isVisible() ) {
+			await this.page.locator( '.wp-list-table' ).first().locator( '[type="checkbox"]' ).first().check();
+			await this.page.locator( '#bulk-action-selector-top' ).selectOption( 'trash' );
+			await this.page.locator( '#doaction' ).click();
+		}
+
+		await this.page.getByRole( 'link', { name: 'Add New Hello+ Header' } ).click();
+		await this.page.getByRole( 'button', { name: 'Create Template' } ).click();
+		await this.ensurePanelLoaded();
+		await this.page.getByText( 'Templates', { exact: true } ).click();
+		await this.page.getByText( 'Site templates' ).click();
+		await this.page.locator( EditorSelectors.templateImport.importIcon ).click();
+		await this.page.getByText( 'Select File' ).click();
+		await this.page.locator( EditorSelectors.media.imageInp ).setInputFiles( filePath );
+		await this.page.getByRole( 'button', { name: 'Continue' } ).click();
+		await this.page.getByRole( 'button', { name: 'Enable and Import' } ).click();
+		await this.page.getByRole( 'button', { name: 'Insert' } ).first().click();
+	}
+
+	/**
+	 * Make sure that the elements panel is loaded.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async ensurePanelLoaded(): Promise<void> {
+		if ( this.isPanelLoaded ) {
+			return;
+		}
+
+		await this.page.waitForSelector( '.elementor-panel-loading', { state: 'detached' } );
+		await this.page.waitForSelector( '#elementor-loading', { state: 'hidden' } );
+
+		this.isPanelLoaded = true;
 	}
 }

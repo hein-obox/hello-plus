@@ -336,6 +336,10 @@
 		white-space: nowrap;
 	}
 
+	& .ehp-header__item:is([type="button"]) {
+		background-color: transparent;
+	}
+
 	& .ehp-header__item:is(a),
 	& .ehp-header__item:is([type="button"]) {
 		color: var(--header-menu-item-color);
