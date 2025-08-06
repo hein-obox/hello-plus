@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eox pipefail
 
+wp plugin install wordpress-importer --activate
 wp plugin activate elementor
 wp theme activate hello-biz
 wp plugin activate hello-plus
@@ -25,3 +26,5 @@ done
 wp cache flush
 wp rewrite flush --hard
 wp elementor flush-css
+wp wc tool run install_pages --user=admin
+wp import ./wp-content/plugins/hello-plus/tests/playwright/sample-data/sample_products_with_acf_meta.xml --authors=skip --quiet --allow-root
