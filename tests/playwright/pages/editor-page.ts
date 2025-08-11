@@ -515,7 +515,7 @@ export default class EditorPage extends BasePage {
 	 */
 	async setSelect2ControlValue( controlId: string, value: string, exactMatch: boolean = true ): Promise<void> {
 		await this.page.locator( `.elementor-control-${ controlId } .select2:not( .select2-container--disabled )` ).click();
-		await this.page.locator( '.select2-search--dropdown input[type="search"]' ).fill( value );
+		await this.page.locator( '.select2-search--dropdown input[type="search"]' ).first().fill( value );
 
 		if ( exactMatch ) {
 			await this.page.locator( `.select2-results__option:text-is("${ value }")` ).first().click();
@@ -550,6 +550,32 @@ export default class EditorPage extends BasePage {
 	 */
 	async setChooseControlValue( controlId: string, icon: string ): Promise<void> {
 		await this.page.locator( `.elementor-control-${ controlId } .${ icon }` ).click();
+	}
+
+	/**
+	 * Set choose-image control value (custom Choose_Img_Control).
+	 *
+	 * @param {string} controlId - The control to set the value to.
+	 * @param {string} value     - The option value to choose (e.g., 'focus').
+	 *
+	 * @return {Promise<void>}
+	 */
+	async setPresetImageControlValue( controlId: string, value: string ): Promise<void> {
+		const control = this.page.locator( `.elementor-control-${ controlId }` );
+		await control.locator( '.elementor-choices.elementor-choices-img' ).first().waitFor();
+		const choice = control.locator( '.elementor-choices-element' ).filter( { has: this.page.locator( `img.elementor-choices-image[data-hover="${ value }"]` ) } ).first();
+		await choice.scrollIntoViewIfNeeded();
+		await choice.locator( 'label.elementor-choices-label' ).first().click();
+	}
+
+	async setIconControlValueByName( controlId: string, iconName: string ): Promise<void> {
+		const control = this.page.locator( `.elementor-control-${ controlId }` );
+		await control.locator( '.elementor-control-icons--inline__icon' ).first().click();
+		await this.page.locator( '#elementor-icons-manager-modal' ).waitFor();
+		const item = this.page.locator( 'div' ).filter( { hasText: new RegExp( `^${ iconName }$` ) } ).first();
+		await item.waitFor();
+		await item.click();
+		await this.page.getByRole( 'button', { name: 'Insert' } ).click();
 	}
 
 	/**
