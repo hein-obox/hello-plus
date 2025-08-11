@@ -985,26 +985,51 @@ export default class EditorPage extends BasePage {
 	 * @return {Promise<void>}
 	 */
 	async publishAndViewPage(): Promise<void> {
-		const hasTopBar = await this.hasTopBar();
-
 		await this.publishPage();
-
-		if ( hasTopBar ) {
-			await this.clickTopBarItem( TopBarSelectors.saveOptions );
-			await this.page.getByRole( 'menuitem', { name: 'View Page' } ).click();
-			const pageId = await this.getPageId();
-			await this.page.goto( `/?p=${ pageId }` );
-		} else {
-			await this.openMenuPanel( 'view-page' );
-		}
-
-		await this.page.waitForLoadState();
+		await this.viewPage();
 	}
 
 	async viewPage() {
 		const pageId = await this.getPageId();
+
+		if ( ! pageId ) {
+			return;
+		}
+
 		await this.page.goto( `/?p=${ pageId }` );
 		await this.page.waitForLoadState();
+	}
+
+	/**
+	 * Get a control value by index with modulo cycling for array access.
+	 *
+	 * @param {Array}  controlValues - Array of control values.
+	 * @param {number} loopIndex     - The loop index.
+	 *
+	 * @return {any} The control value at the calculated index.
+	 */
+	getControlValueByIndex( controlValues: any[], loopIndex: number ): any {
+		return controlValues[ loopIndex % controlValues.length ];
+	}
+
+	/**
+	 * Set background color control value with proper visibility check.
+	 * Ensures the color picker is opened before setting the color value.
+	 *
+	 * @param {string} backgroundControlId - The background control ID (e.g., 'background_background').
+	 * @param {string} colorControlId      - The color control ID (e.g., 'background_color').
+	 * @param {string} colorValue          - The color value to set.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async setBackgroundColorControlValue( backgroundControlId: string, colorControlId: string, colorValue: string ): Promise<void> {
+		const colorControl = this.page.locator( `.elementor-control-${ colorControlId }` );
+
+		if ( ! await colorControl.isVisible() ) {
+			await this.setChooseControlValue( backgroundControlId, 'eicon-paint-brush' );
+		}
+
+		await this.setColorControlValue( colorControlId, colorValue );
 	}
 
 	/**
@@ -1031,8 +1056,11 @@ export default class EditorPage extends BasePage {
 	 *
 	 * @return {Promise<string>} The ID of the current page.
 	 */
-	async getPageId(): Promise<string> {
-		return await this.page.evaluate( () => elementor.config.initialDocument.id );
+	async getPageId(): Promise<string | null> {
+		return await this.page.evaluate( () => {
+			const urlParams = new URLSearchParams( window.location.search );
+			return urlParams.get( 'post' );
+		} );
 	}
 
 	/**
