@@ -726,6 +726,25 @@ export default class EditorPage extends BasePage {
 		await mapControls.evaluate( ( element ) => element.style.opacity = '0' );
 	}
 
+	async hideContactMapControls(): Promise<void> {
+		await this.getPreviewFrame().waitForSelector( '.ehp-contact__map iframe' );
+
+		const mapFrame = this.getPreviewFrame().frameLocator( '.ehp-contact__map iframe' ),
+			mapText = mapFrame.locator( '.gm-style iframe + div + div' ),
+			mapInset = mapFrame.locator( 'button.gm-inset-map.gm-inset-light' ),
+			mapControls = mapFrame.locator( '.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom' );
+
+		if ( await mapText.count() > 0 ) {
+			await mapText.evaluate( ( element ) => element.style.opacity = '0' );
+		}
+		if ( await mapInset.count() > 0 ) {
+			await mapInset.evaluate( ( element ) => element.style.opacity = '0' );
+		}
+		if ( await mapControls.count() > 0 ) {
+			await mapControls.evaluate( ( element ) => element.style.opacity = '0' );
+		}
+	}
+
 	/**
 	 * Open the page in the Preview mode.
 	 *
@@ -735,7 +754,7 @@ export default class EditorPage extends BasePage {
 		if ( ! await this.page.$( 'body.elementor-editor-preview' ) ) {
 			await this.page.locator( '#elementor-mode-switcher' ).click();
 			await this.page.waitForSelector( 'body.elementor-editor-preview' );
-			await this.page.waitForTimeout( 500 );
+			await this.page.waitForTimeout( 200 );
 		} else {
 			await this.page.locator( '#elementor-mode-switcher-preview' ).click();
 			await this.page.waitForSelector( 'body.elementor-editor-active' );
