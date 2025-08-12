@@ -123,7 +123,6 @@ class Ajax_Handler {
 		);
 
 		$record = new Form_Record( $form_fields, $form );
-
 		if ( ! $record->validate( $this ) ) {
 			$this
 				->add_error( $record->get( 'errors' ) )
@@ -132,7 +131,6 @@ class Ajax_Handler {
 		}
 
 		$record->process_fields( $this );
-		//check for process errors
 		if ( ! empty( $this->errors ) ) {
 			$this->send();
 		}
@@ -143,7 +141,6 @@ class Ajax_Handler {
 		$errors = array_merge( $this->messages['error'], $this->messages['admin_error'] );
 
 		foreach ( $actions as $action ) {
-
 			$exception = null;
 
 			try {
@@ -152,19 +149,16 @@ class Ajax_Handler {
 				$this->handle_bc_errors( $errors );
 			} catch ( \Exception $e ) {
 				$exception = $e;
-
 				// Add an admin error.
 				if ( ! in_array( $exception->getMessage(), $this->messages['admin_error'], true ) ) {
 					$this->add_admin_error_message( "{$action->get_label()} {$exception->getMessage()}" );
 				}
-
 				// Add a user error.
 				$this->add_error_message( $this->get_default_message( self::ERROR, $this->current_form['settings'] ) );
 			}
 
 			$errors = array_merge( $this->messages['error'], $this->messages['admin_error'] );
 		}
-
 		$this->send();
 	}
 

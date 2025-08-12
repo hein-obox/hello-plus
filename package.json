@@ -18,7 +18,9 @@
 		"test:playwright:headless": "CI=1 playwright test -c tests/playwright/playwright.config.ts",
 		"test:playwright:debug": "npm run test:playwright -- --debug",
 		"test:setup:playwright": "wp-env run cli bash hello-plus-config/setup.sh && wp-env run tests-cli bash hello-plus-config/setup.sh",
-		"test:setup:chromium": "npx playwright install chromium"
+		"test:setup:chromium": "npx playwright install chromium",
+		"wp-env:start": "wp-env start",
+		"wp-env:stop": "wp-env stop"
 	},
 	"devDependencies": {
 		"@elementor/wp-lite-env": "^0.0.20",

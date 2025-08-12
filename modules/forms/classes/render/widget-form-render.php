@@ -62,9 +62,10 @@ class Widget_Form_Render {
 		$column_structure->add_column_structure_attributes();
 
 		$this->widget->add_render_attribute( 'layout', [
-			'name' => $this->settings['form_name'] || '',
+			'name' => $this->settings['form_name'] ?? '',
 			'class' => $layout_classnames,
 			'method' => 'post',
+			'id' => $this->settings['form_id'] ?? '',
 		] );
 
 		$this->widget->add_render_attribute( 'wrapper', [
